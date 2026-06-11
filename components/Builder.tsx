@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { Checkbox } from "@base-ui/react/checkbox";
+import { Switch } from "@base-ui/react/switch";
+import { Toggle } from "@base-ui/react/toggle";
+import { Input } from "@base-ui/react/input";
 import { TEAMS, REGION_LABELS, Region } from "@/lib/teams";
 import SubscribeButtons from "./SubscribeButtons";
 
@@ -45,11 +49,11 @@ export default function Builder() {
       .finally(() => setLoaded(true));
   }, [editId]);
 
-  const toggle = (code: string) => {
+  const toggle = (code: string, pressed: boolean) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(code)) next.delete(code);
-      else next.add(code);
+      if (pressed) next.add(code);
+      else next.delete(code);
       return next;
     });
     setShowResult(false);
@@ -111,14 +115,19 @@ export default function Builder() {
         games as they qualify.
       </p>
 
-      <div className="mt-6 space-y-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+      <div className="mt-6 space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
         <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
+          <Checkbox.Root
             checked={finals}
-            onChange={(e) => setFinals(e.target.checked)}
-            className="mt-1 h-5 w-5 accent-emerald-600"
-          />
+            onCheckedChange={(checked) => setFinals(checked === true)}
+            className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border border-zinc-400 dark:border-zinc-600 data-checked:border-emerald-600 data-checked:bg-emerald-600"
+          >
+            <Checkbox.Indicator className="text-white">
+              <svg viewBox="0 0 12 10" className="h-3 w-3 fill-none stroke-current stroke-2">
+                <path d="M1 5l3.5 3.5L11 1" />
+              </svg>
+            </Checkbox.Indicator>
+          </Checkbox.Root>
           <span>
             <span className="font-medium">Include semi-finals &amp; the final</span>
             <span className="block text-sm text-zinc-500">
@@ -126,13 +135,15 @@ export default function Builder() {
             </span>
           </span>
         </label>
+
         <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
+          <Switch.Root
             checked={spoilers === "safe"}
-            onChange={(e) => setSpoilers(e.target.checked ? "safe" : "instant")}
-            className="mt-1 h-5 w-5 accent-emerald-600"
-          />
+            onCheckedChange={(checked) => setSpoilers(checked ? "safe" : "instant")}
+            className="mt-0.5 h-5 w-9 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 p-0.5 transition data-checked:bg-emerald-600"
+          >
+            <Switch.Thumb className="block h-4 w-4 rounded-full bg-white transition-transform data-checked:translate-x-4" />
+          </Switch.Root>
           <span>
             <span className="font-medium">Spoiler protection</span>
             <span className="block text-sm text-zinc-500">
@@ -143,7 +154,7 @@ export default function Builder() {
         </label>
       </div>
 
-      <input
+      <Input
         type="search"
         placeholder="Search teams…"
         value={search}
@@ -160,23 +171,16 @@ export default function Builder() {
               {REGION_LABELS[region]}
             </h2>
             <div className="mt-2 flex flex-wrap gap-2">
-              {teams.map((t) => {
-                const on = selected.has(t.code);
-                return (
-                  <button
-                    key={t.code}
-                    onClick={() => toggle(t.code)}
-                    aria-pressed={on}
-                    className={`rounded-full border px-3 py-2 text-sm font-medium transition ${
-                      on
-                        ? "border-emerald-600 bg-emerald-600 text-white"
-                        : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-500"
-                    }`}
-                  >
-                    {t.flag} {t.name}
-                  </button>
-                );
-              })}
+              {teams.map((t) => (
+                <Toggle
+                  key={t.code}
+                  pressed={selected.has(t.code)}
+                  onPressedChange={(pressed) => toggle(t.code, pressed)}
+                  className="rounded-full border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium transition hover:border-emerald-500 data-pressed:border-emerald-600 data-pressed:bg-emerald-600 data-pressed:text-white"
+                >
+                  {t.flag} {t.name}
+                </Toggle>
+              ))}
             </div>
           </section>
         );
@@ -208,7 +212,7 @@ export default function Builder() {
                   ← keep editing
                 </button>
               </div>
-              <input
+              <Input
                 type="text"
                 placeholder="Name it (optional) — e.g. ‘Our World Cup’"
                 value={name}

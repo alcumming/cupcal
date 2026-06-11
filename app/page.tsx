@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PREMADE } from "@/lib/calendar";
 import PremadeCard from "@/components/PremadeCard";
+import Faq from "@/components/Faq";
 
 const FAQS = [
   {
@@ -127,14 +128,7 @@ export default function Home() {
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-4 py-12">
         <h2 className="text-2xl font-bold">Frequently asked questions</h2>
-        <div className="mt-6 space-y-6">
-          {FAQS.map((f) => (
-            <details key={f.q} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5">
-              <summary className="cursor-pointer font-semibold">{f.q}</summary>
-              <p className="mt-2 text-zinc-600 dark:text-zinc-400">{f.a}</p>
-            </details>
-          ))}
-        </div>
+        <Faq faqs={FAQS} />
       </section>
 
       <footer className="mx-auto max-w-3xl px-4 py-12 text-center text-sm text-zinc-500">
