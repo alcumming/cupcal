@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# World Cup Calendar
 
-## Getting Started
+Build a custom FIFA World Cup 2026 calendar with only the teams you follow, then
+subscribe to it from Google Calendar, Apple Calendar or Outlook. The feed is a
+live ICS subscription: knockout games appear automatically as teams qualify,
+with spoiler protection by default (match-ups hidden until 18h after the
+deciding game).
 
-First, run the development server:
+## How it works
+
+- **Fixture data** comes from [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json)
+  (public domain, auto-updated during the tournament), fetched server-side with a
+  30-minute cache. [data/fixtures-fallback.json](data/fixtures-fallback.json) is a
+  pre-tournament snapshot that both serves as an offline fallback **and** preserves
+  the original bracket structure (`1A`, `W73`, …) so spoiler timing can be computed
+  after the live feed replaces placeholders with real team names.
+- **Feeds** are generated on demand:
+  - `/cal/{slug}.ics` — pre-made calendars (all games, favourites, regions…), defined in [lib/calendar.ts](lib/calendar.ts)
+  - `/api/cal?teams=usa,jpn&finals=1&spoilers=safe` — stateless custom feeds
+  - `/c/{id}/feed.ics` — saved custom feeds (editable via secret link)
+- **Spoiler protection**: a bracket slot is revealed at
+  `max(decidingMatchEnd, min(decidingMatchEnd + 18h, kickoff − 6h))` — see
+  [lib/calendar.ts](lib/calendar.ts).
+- **Storage**: saved calendars live in Supabase in production (a local JSON file
+  in dev). The unguessable calendar id is the edit credential — no login needed.
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy (free)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Push this repo to GitHub and import it in [Vercel](https://vercel.com/new) (Hobby plan).
+2. Set the env var `NEXT_PUBLIC_SITE_URL` to your production URL (e.g. `https://yourdomain.com`).
+3. (Optional, enables "save & edit later") Create a free [Supabase](https://supabase.com) project, run the SQL below, then set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in Vercel. Without these, everything else still works — saving just returns a friendly error.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sql
+create table calendars (
+  id text primary key,
+  config jsonb not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table calendars enable row level security; -- no public policies: server-only access
+```
 
-## Learn More
+4. Add your custom domain in Vercel → Project → Domains.
 
-To learn more about Next.js, take a look at the following resources:
+## Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Google Calendar refreshes subscribed feeds roughly once a day; Apple Calendar
+  is user-configurable (15 min – weekly). The feed advertises `REFRESH-INTERVAL: PT4H`.
+- Google Calendar's mobile apps cannot add URL subscriptions — the UX routes
+  mobile Google users to "email me the link" + desktop instructions.

@@ -1,0 +1,90 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getStore } from "@/lib/store";
+import { TEAMS_BY_CODE } from "@/lib/teams";
+import SubscribeButtons from "@/components/SubscribeButtons";
+
+export const metadata = {
+  title: "Your World Cup 2026 calendar",
+  robots: { index: false }, // secret links must never be indexed
+};
+
+export default async function SavedCalendarPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ updated?: string }>;
+}) {
+  const { id } = await params;
+  const { updated } = await searchParams;
+  const saved = await getStore().get(id);
+  if (!saved) notFound();
+
+  const teams = saved.config.teams
+    .map((c) => TEAMS_BY_CODE.get(c))
+    .filter((t) => t != null);
+
+  return (
+    <main className="mx-auto max-w-xl px-4 py-12">
+      <Link href="/" className="text-sm text-zinc-500 hover:underline">← World Cup Calendar</Link>
+
+      {updated && (
+        <p className="mt-4 rounded-xl bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
+          ✓ Saved. If you&apos;re already subscribed, your calendar will pick up the
+          changes on its next refresh — nothing else to do.
+        </p>
+      )}
+
+      <h1 className="mt-4 text-3xl font-bold tracking-tight">
+        {saved.config.name ?? "My World Cup 2026"}
+      </h1>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {saved.config.teams.includes("all") ? (
+          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">🏆 Every game</span>
+        ) : (
+          teams.map((t) => (
+            <span key={t.code} className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+              {t.flag} {t.name}
+            </span>
+          ))
+        )}
+        {saved.config.finals && (
+          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">🥇 Semis &amp; final</span>
+        )}
+        <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+          {saved.config.spoilers === "safe" ? "🙈 Spoiler-safe" : "⚡ Instant updates"}
+        </span>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="font-semibold">Subscribe</h2>
+        <div className="mt-3">
+          <SubscribeButtons
+            feedPath={`/c/${id}/feed.ics`}
+            calendarName={saved.config.name ?? "My World Cup 2026"}
+          />
+        </div>
+      </div>
+
+      <div className="mt-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+        <h2 className="font-semibold">Change your teams anytime</h2>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Discovered a new team to root for? Edit this calendar and your
+          subscribed feed updates in place — no need to re-subscribe.
+        </p>
+        <Link
+          href={`/build?edit=${id}`}
+          className="mt-3 inline-block rounded-xl border border-emerald-600 px-4 py-2 font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950"
+        >
+          ✏️ Edit teams
+        </Link>
+        <p className="mt-3 text-xs text-zinc-500">
+          Bookmark this page — the link is your key to this calendar. Anyone
+          with it can edit it, so only share with your household.
+        </p>
+      </div>
+    </main>
+  );
+}

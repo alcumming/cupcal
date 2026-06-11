@@ -1,0 +1,15 @@
+# World Cup Calendar
+
+> Free tool that builds a custom FIFA World Cup 2026 calendar subscription with only the matches of teams you choose. Works with Google Calendar, Apple Calendar (iPhone/Mac) and Outlook. The feed is a live ICS subscription: knockout-round games appear automatically as teams qualify, with optional spoiler protection (match-ups hidden until 18 hours after the deciding game).
+
+## Key facts
+- The 2026 FIFA World Cup runs June 11 – July 19, 2026 across the USA, Mexico and Canada, with 48 teams and 104 matches.
+- Users pick teams at /build; semi-finals and the final are included by default.
+- Ready-made calendars (every game, tournament favourites, European / African / South American / Asian teams, host nations, semis & final only) are one-tap subscriptions from the homepage.
+- Subscribing: iPhone users tap an Apple Calendar (webcal) link. Google Calendar subscriptions must be added from a desktop browser (the mobile app cannot add calendar URLs); they then sync to phones automatically.
+- Custom calendars can be saved with a private link and edited later — the subscribed feed updates in place. No account required. Free.
+
+## Pages
+- /: overview, ready-made calendars, FAQ
+- /build: custom calendar builder
+- /how-to-subscribe: per-platform subscription instructions
