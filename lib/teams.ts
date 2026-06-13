@@ -12,60 +12,60 @@ export type Region =
 export interface Team {
   code: string; // FIFA three-letter code, lowercase (used in URLs)
   name: string;
-  flag: string;
+  flag: string; // flag-icons code, e.g. "us", "gb-eng" (rendered by <Flag>)
   region: Region;
   favourite?: boolean; // pre-tournament favourites bundle
 }
 
 export const TEAMS: Team[] = [
-  { code: "alg", name: "Algeria", flag: "🇩🇿", region: "africa" },
-  { code: "arg", name: "Argentina", flag: "🇦🇷", region: "south-america", favourite: true },
-  { code: "aus", name: "Australia", flag: "🇦🇺", region: "asia" },
-  { code: "aut", name: "Austria", flag: "🇦🇹", region: "europe" },
-  { code: "bel", name: "Belgium", flag: "🇧🇪", region: "europe" },
-  { code: "bih", name: "Bosnia & Herzegovina", flag: "🇧🇦", region: "europe" },
-  { code: "bra", name: "Brazil", flag: "🇧🇷", region: "south-america", favourite: true },
-  { code: "can", name: "Canada", flag: "🇨🇦", region: "north-america" },
-  { code: "cpv", name: "Cape Verde", flag: "🇨🇻", region: "africa" },
-  { code: "col", name: "Colombia", flag: "🇨🇴", region: "south-america" },
-  { code: "cro", name: "Croatia", flag: "🇭🇷", region: "europe" },
-  { code: "cuw", name: "Curaçao", flag: "🇨🇼", region: "north-america" },
-  { code: "cze", name: "Czech Republic", flag: "🇨🇿", region: "europe" },
-  { code: "cod", name: "DR Congo", flag: "🇨🇩", region: "africa" },
-  { code: "ecu", name: "Ecuador", flag: "🇪🇨", region: "south-america" },
-  { code: "egy", name: "Egypt", flag: "🇪🇬", region: "africa" },
-  { code: "eng", name: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", region: "europe", favourite: true },
-  { code: "fra", name: "France", flag: "🇫🇷", region: "europe", favourite: true },
-  { code: "ger", name: "Germany", flag: "🇩🇪", region: "europe", favourite: true },
-  { code: "gha", name: "Ghana", flag: "🇬🇭", region: "africa" },
-  { code: "hai", name: "Haiti", flag: "🇭🇹", region: "north-america" },
-  { code: "irn", name: "Iran", flag: "🇮🇷", region: "asia" },
-  { code: "irq", name: "Iraq", flag: "🇮🇶", region: "asia" },
-  { code: "civ", name: "Ivory Coast", flag: "🇨🇮", region: "africa" },
-  { code: "jpn", name: "Japan", flag: "🇯🇵", region: "asia" },
-  { code: "jor", name: "Jordan", flag: "🇯🇴", region: "asia" },
-  { code: "mex", name: "Mexico", flag: "🇲🇽", region: "north-america" },
-  { code: "mar", name: "Morocco", flag: "🇲🇦", region: "africa" },
-  { code: "ned", name: "Netherlands", flag: "🇳🇱", region: "europe", favourite: true },
-  { code: "nzl", name: "New Zealand", flag: "🇳🇿", region: "oceania" },
-  { code: "nor", name: "Norway", flag: "🇳🇴", region: "europe" },
-  { code: "pan", name: "Panama", flag: "🇵🇦", region: "north-america" },
-  { code: "par", name: "Paraguay", flag: "🇵🇾", region: "south-america" },
-  { code: "por", name: "Portugal", flag: "🇵🇹", region: "europe", favourite: true },
-  { code: "qat", name: "Qatar", flag: "🇶🇦", region: "asia" },
-  { code: "ksa", name: "Saudi Arabia", flag: "🇸🇦", region: "asia" },
-  { code: "sco", name: "Scotland", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", region: "europe" },
-  { code: "sen", name: "Senegal", flag: "🇸🇳", region: "africa" },
-  { code: "rsa", name: "South Africa", flag: "🇿🇦", region: "africa" },
-  { code: "kor", name: "South Korea", flag: "🇰🇷", region: "asia" },
-  { code: "esp", name: "Spain", flag: "🇪🇸", region: "europe", favourite: true },
-  { code: "swe", name: "Sweden", flag: "🇸🇪", region: "europe" },
-  { code: "sui", name: "Switzerland", flag: "🇨🇭", region: "europe" },
-  { code: "tun", name: "Tunisia", flag: "🇹🇳", region: "africa" },
-  { code: "tur", name: "Turkey", flag: "🇹🇷", region: "europe" },
-  { code: "usa", name: "USA", flag: "🇺🇸", region: "north-america" },
-  { code: "uru", name: "Uruguay", flag: "🇺🇾", region: "south-america" },
-  { code: "uzb", name: "Uzbekistan", flag: "🇺🇿", region: "asia" },
+  { code: "alg", name: "Algeria", flag: "dz", region: "africa" },
+  { code: "arg", name: "Argentina", flag: "ar", region: "south-america", favourite: true },
+  { code: "aus", name: "Australia", flag: "au", region: "asia" },
+  { code: "aut", name: "Austria", flag: "at", region: "europe" },
+  { code: "bel", name: "Belgium", flag: "be", region: "europe" },
+  { code: "bih", name: "Bosnia & Herzegovina", flag: "ba", region: "europe" },
+  { code: "bra", name: "Brazil", flag: "br", region: "south-america", favourite: true },
+  { code: "can", name: "Canada", flag: "ca", region: "north-america" },
+  { code: "cpv", name: "Cape Verde", flag: "cv", region: "africa" },
+  { code: "col", name: "Colombia", flag: "co", region: "south-america" },
+  { code: "cro", name: "Croatia", flag: "hr", region: "europe" },
+  { code: "cuw", name: "Curaçao", flag: "cw", region: "north-america" },
+  { code: "cze", name: "Czech Republic", flag: "cz", region: "europe" },
+  { code: "cod", name: "DR Congo", flag: "cd", region: "africa" },
+  { code: "ecu", name: "Ecuador", flag: "ec", region: "south-america" },
+  { code: "egy", name: "Egypt", flag: "eg", region: "africa" },
+  { code: "eng", name: "England", flag: "gb-eng", region: "europe", favourite: true },
+  { code: "fra", name: "France", flag: "fr", region: "europe", favourite: true },
+  { code: "ger", name: "Germany", flag: "de", region: "europe", favourite: true },
+  { code: "gha", name: "Ghana", flag: "gh", region: "africa" },
+  { code: "hai", name: "Haiti", flag: "ht", region: "north-america" },
+  { code: "irn", name: "Iran", flag: "ir", region: "asia" },
+  { code: "irq", name: "Iraq", flag: "iq", region: "asia" },
+  { code: "civ", name: "Ivory Coast", flag: "ci", region: "africa" },
+  { code: "jpn", name: "Japan", flag: "jp", region: "asia" },
+  { code: "jor", name: "Jordan", flag: "jo", region: "asia" },
+  { code: "mex", name: "Mexico", flag: "mx", region: "north-america" },
+  { code: "mar", name: "Morocco", flag: "ma", region: "africa" },
+  { code: "ned", name: "Netherlands", flag: "nl", region: "europe", favourite: true },
+  { code: "nzl", name: "New Zealand", flag: "nz", region: "oceania" },
+  { code: "nor", name: "Norway", flag: "no", region: "europe" },
+  { code: "pan", name: "Panama", flag: "pa", region: "north-america" },
+  { code: "par", name: "Paraguay", flag: "py", region: "south-america" },
+  { code: "por", name: "Portugal", flag: "pt", region: "europe", favourite: true },
+  { code: "qat", name: "Qatar", flag: "qa", region: "asia" },
+  { code: "ksa", name: "Saudi Arabia", flag: "sa", region: "asia" },
+  { code: "sco", name: "Scotland", flag: "gb-sct", region: "europe" },
+  { code: "sen", name: "Senegal", flag: "sn", region: "africa" },
+  { code: "rsa", name: "South Africa", flag: "za", region: "africa" },
+  { code: "kor", name: "South Korea", flag: "kr", region: "asia" },
+  { code: "esp", name: "Spain", flag: "es", region: "europe", favourite: true },
+  { code: "swe", name: "Sweden", flag: "se", region: "europe" },
+  { code: "sui", name: "Switzerland", flag: "ch", region: "europe" },
+  { code: "tun", name: "Tunisia", flag: "tn", region: "africa" },
+  { code: "tur", name: "Turkey", flag: "tr", region: "europe" },
+  { code: "usa", name: "USA", flag: "us", region: "north-america" },
+  { code: "uru", name: "Uruguay", flag: "uy", region: "south-america" },
+  { code: "uzb", name: "Uzbekistan", flag: "uz", region: "asia" },
 ];
 
 export const TEAMS_BY_NAME = new Map(TEAMS.map((t) => [t.name, t]));
@@ -80,6 +80,18 @@ export const REGION_LABELS: Record<Region, string> = {
   oceania: "Oceania",
 };
 
-export function teamLabel(team: Team): string {
-  return `${team.flag} ${team.name}`;
+// Flag emoji for the GB subdivisions, which can't be derived from regional
+// indicator letters the way ISO 3166-1 country codes can.
+const SUBDIVISION_FLAG_EMOJI: Record<string, string> = {
+  "gb-eng": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "gb-sct": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+};
+
+// Converts a flag-icons code to its emoji equivalent, for use in calendar
+// invite text (where emoji render fine but SVGs can't).
+export function flagEmoji(code: string): string {
+  if (code in SUBDIVISION_FLAG_EMOJI) return SUBDIVISION_FLAG_EMOJI[code];
+  return [...code.toUpperCase()]
+    .map((c) => String.fromCodePoint(c.codePointAt(0)! + 0x1f1a5))
+    .join("");
 }

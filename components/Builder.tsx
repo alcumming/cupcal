@@ -7,8 +7,10 @@ import { Checkbox } from "@base-ui/react/checkbox";
 import { Switch } from "@base-ui/react/switch";
 import { Toggle } from "@base-ui/react/toggle";
 import { Input } from "@base-ui/react/input";
+import { ArrowLeft, ArrowRight, FloppyDisk } from "@phosphor-icons/react/ssr";
 import { TEAMS, REGION_LABELS, Region } from "@/lib/teams";
 import SubscribeButtons from "./SubscribeButtons";
+import Flag from "./Flag";
 
 const REGION_ORDER: Region[] = [
   "europe",
@@ -106,7 +108,9 @@ export default function Builder() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-44 pt-10">
-      <Link href="/" className="text-sm text-zinc-500 hover:underline">← World Cup Calendar</Link>
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
+        <ArrowLeft size={14} /> World Cup Calendar
+      </Link>
       <h1 className="mt-3 text-3xl font-bold tracking-tight">
         {editId ? "Edit your calendar" : "Pick your teams"}
       </h1>
@@ -131,7 +135,7 @@ export default function Builder() {
           <span>
             <span className="font-medium">Include semi-finals &amp; the final</span>
             <span className="block text-sm text-zinc-500">
-              The games everyone watches — on by default.
+              Included by default, even if you don&apos;t pick a single team.
             </span>
           </span>
         </label>
@@ -176,9 +180,9 @@ export default function Builder() {
                   key={t.code}
                   pressed={selected.has(t.code)}
                   onPressedChange={(pressed) => toggle(t.code, pressed)}
-                  className="rounded-full border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium transition hover:border-emerald-500 data-pressed:border-emerald-600 data-pressed:bg-emerald-600 data-pressed:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium transition hover:border-emerald-500 data-pressed:border-emerald-600 data-pressed:bg-emerald-600 data-pressed:text-white"
                 >
-                  {t.flag} {t.name}
+                  <Flag code={t.flag} name={t.name} /> {t.name}
                 </Toggle>
               ))}
             </div>
@@ -199,17 +203,17 @@ export default function Builder() {
               <button
                 onClick={() => setShowResult(true)}
                 disabled={!canGenerate}
-                className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-40"
               >
-                Get my calendar →
+                Get my calendar <ArrowRight size={18} weight="bold" />
               </button>
             </div>
           ) : (
             <div className="max-h-[60vh] overflow-y-auto py-1">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">Your calendar is ready</h3>
-                <button onClick={() => setShowResult(false)} className="text-sm text-zinc-500 hover:underline">
-                  ← keep editing
+                <button onClick={() => setShowResult(false)} className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
+                  <ArrowLeft size={14} /> keep editing
                 </button>
               </div>
               <Input
@@ -227,13 +231,16 @@ export default function Builder() {
                 <button
                   onClick={save}
                   disabled={saving}
-                  className="w-full rounded-xl border border-emerald-600 px-4 py-3 font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-950 disabled:opacity-40"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-600 px-4 py-3 font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-950 disabled:opacity-40"
                 >
-                  {saving
-                    ? "Saving…"
-                    : editId
-                      ? "💾 Save changes"
-                      : "💾 Save so I can edit it later (no signup)"}
+                  {saving ? (
+                    "Saving…"
+                  ) : (
+                    <>
+                      <FloppyDisk size={18} weight="fill" />
+                      {editId ? "Save changes" : "Save so I can edit it later (no signup)"}
+                    </>
+                  )}
                 </button>
                 {saveError && <p className="mt-2 text-sm text-red-600">{saveError}</p>}
                 {!editId && (

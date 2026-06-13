@@ -2,6 +2,8 @@ import Link from "next/link";
 import { PREMADE } from "@/lib/calendar";
 import PremadeCard from "@/components/PremadeCard";
 import Faq from "@/components/Faq";
+import CupCalHero from "@/components/hero/CupCalHero";
+import HowItWorks from "@/components/HowItWorks";
 
 const FAQS = [
   {
@@ -62,65 +64,20 @@ export default function Home() {
       />
 
       {/* Hero */}
-      <section className="mx-auto max-w-3xl px-4 pt-16 pb-12 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-emerald-600">
-          FIFA World Cup 2026 · June 11 – July 19
-        </p>
-        <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-balance">
-          Only the World Cup games you care about, in your calendar
-        </h1>
-        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 text-balance">
-          104 matches is a lot. Pick your teams and get a calendar with just
-          their games — it updates itself as the tournament unfolds, all the way
-          to the final. Works with Google Calendar, Apple Calendar and Outlook.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-          <Link
-            href="/build"
-            className="rounded-xl bg-emerald-600 px-6 py-3.5 font-semibold text-white transition hover:bg-emerald-700"
-          >
-            Build my calendar →
-          </Link>
-          <a
-            href="#calendars"
-            className="rounded-xl border border-zinc-300 dark:border-zinc-700 px-6 py-3.5 font-semibold transition hover:border-emerald-500"
-          >
-            Ready-made calendars
-          </a>
-        </div>
-        <p className="mt-6 text-sm text-zinc-500">
-          🇺🇸 USA vs Australia 🇦🇺 — that&apos;s how matches look in your calendar.
-          Local kick-off times, no spoilers.
-        </p>
-      </section>
+      <CupCalHero />
 
       {/* How it works */}
-      <section className="mx-auto max-w-3xl px-4 py-12">
-        <h2 className="text-2xl font-bold">How it works</h2>
-        <ol className="mt-6 grid gap-6 sm:grid-cols-3">
-          {[
-            ["1", "Pick your teams", "Choose who you follow. Semi-finals and the final are included by default — everyone watches those."],
-            ["2", "Subscribe once", "Add the calendar to Google, Apple or Outlook in one tap. No account, no app, no spreadsheet."],
-            ["3", "It updates itself", "When your team reaches the knockouts, the new games just appear — spoiler-free by default."],
-          ].map(([n, title, body]) => (
-            <li key={n} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 font-bold text-white">{n}</span>
-              <h3 className="mt-3 font-semibold">{title}</h3>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <HowItWorks />
 
       {/* Pre-made calendars */}
       <section id="calendars" className="mx-auto max-w-5xl px-4 py-12">
         <h2 className="text-2xl font-bold">Ready-made calendars</h2>
         <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-          Don&apos;t want to choose? Subscribe to one of these in a single tap.
+          If you'd rather not pick teams yourself, subscribe to one of these in a single tap.
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PREMADE.map((p) => (
-            <PremadeCard key={p.slug} slug={p.slug} title={p.title} emoji={p.emoji} description={p.description} />
+            <PremadeCard key={p.slug} slug={p.slug} title={p.title} icon={p.icon} description={p.description} />
           ))}
         </div>
       </section>

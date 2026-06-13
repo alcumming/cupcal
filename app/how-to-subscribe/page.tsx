@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ArrowLeft } from "@phosphor-icons/react/ssr";
 import SubscribeInstructions from "@/components/SubscribeInstructions";
 
 export const metadata: Metadata = {
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
 export default function HowToSubscribe() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <Link href="/" className="text-sm text-zinc-500 hover:underline">← World Cup Calendar</Link>
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
+        <ArrowLeft size={14} /> World Cup Calendar
+      </Link>
       <h1 className="mt-3 text-3xl font-bold tracking-tight">How to subscribe</h1>
       <p className="mt-3 text-zinc-600 dark:text-zinc-400">
         Your calendar link is a <strong>live subscription</strong>, not a file

@@ -1,5 +1,6 @@
 import { Match } from "./fixtures";
 import { CalendarConfig, selectMatches, visibleSide } from "./calendar";
+import { flagEmoji } from "./teams";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const DOMAIN = new URL(SITE_URL).hostname;
@@ -55,8 +56,8 @@ export function buildIcs(config: CalendarConfig, all: Match[], now = new Date())
     const v1 = visibleSide(m.side1, m, all, config.spoilers, now);
     const v2 = visibleSide(m.side2, m, all, config.spoilers, now);
 
-    const name1 = v1.team ? `${v1.team.flag} ${v1.team.name}` : v1.label;
-    const name2 = v2.team ? `${v2.team.name} ${v2.team.flag}` : v2.label;
+    const name1 = v1.team ? `${flagEmoji(v1.team.flag)} ${v1.team.name}` : v1.label;
+    const name2 = v2.team ? `${v2.team.name} ${flagEmoji(v2.team.flag)}` : v2.label;
     const isTbd = !v1.team || !v2.team;
     const summary =
       m.stage === "group"
@@ -98,7 +99,7 @@ function shortStage(m: Match): string {
     case "quarter-final": return "QF";
     case "semi-final": return "SF";
     case "third-place": return "3rd place";
-    case "final": return "🏆 FINAL";
+    case "final": return "FINAL";
     default: return "";
   }
 }

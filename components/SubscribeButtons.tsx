@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  AppleLogo,
+  GoogleLogo,
+  MicrosoftOutlookLogo,
+  Envelope,
+  Copy,
+  Check,
+} from "@phosphor-icons/react/ssr";
 
 type Platform = "ios" | "android" | "desktop";
 
@@ -46,17 +54,17 @@ export default function SubscribeButtons({
   )}`;
 
   const primary =
-    "block w-full text-center rounded-xl px-4 py-3 font-semibold transition";
+    "flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold transition";
 
   return (
     <div className="space-y-2">
       {platform === "ios" && (
         <>
           <a href={webcalUrl} className={`${primary} bg-emerald-600 text-white hover:bg-emerald-700`}>
-             Add to Apple Calendar — one tap
+            <AppleLogo size={20} weight="fill" /> Add to Apple Calendar — one tap
           </a>
           <a href={mailto} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
-            ✉️ Use Google Calendar? Email me the link
+            <Envelope size={20} /> Use Google Calendar? Email me the link
           </a>
           <p className="text-xs text-zinc-500 px-1">
             Google Calendar can only add subscription links on a computer — email
@@ -68,10 +76,10 @@ export default function SubscribeButtons({
       {platform === "android" && (
         <>
           <a href={googleUrl} className={`${primary} bg-emerald-600 text-white hover:bg-emerald-700`}>
-            Add to Google Calendar
+            <GoogleLogo size={20} weight="bold" /> Add to Google Calendar
           </a>
           <a href={mailto} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
-            ✉️ Email me the link
+            <Envelope size={20} /> Email me the link
           </a>
           <p className="text-xs text-zinc-500 px-1">
             If the Google Calendar app opens without an &ldquo;add&rdquo; option, open the
@@ -83,23 +91,23 @@ export default function SubscribeButtons({
       {platform === "desktop" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <a href={googleUrl} target="_blank" rel="noopener" className={`${primary} bg-emerald-600 text-white hover:bg-emerald-700`}>
-            Google Calendar
+            <GoogleLogo size={20} weight="bold" /> Google Calendar
           </a>
           <a href={webcalUrl} className={`${primary} bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300`}>
-             Apple Calendar
+            <AppleLogo size={20} weight="fill" /> Apple Calendar
           </a>
           <a href={outlookUrl} target="_blank" rel="noopener" className={`${primary} bg-sky-600 text-white hover:bg-sky-700`}>
-            Outlook.com
+            <MicrosoftOutlookLogo size={20} /> Outlook.com
           </a>
           <button onClick={copy} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
-            {copied ? "✓ Copied!" : "🔗 Copy link"}
+            {copied ? <><Check size={20} weight="bold" /> Copied</> : <><Copy size={20} /> Copy link</>}
           </button>
         </div>
       )}
 
       {platform !== "desktop" && (
         <button onClick={copy} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
-          {copied ? "✓ Copied!" : "🔗 Copy subscribe link"}
+          {copied ? <><Check size={20} weight="bold" /> Copied</> : <><Copy size={20} /> Copy subscribe link</>}
         </button>
       )}
 

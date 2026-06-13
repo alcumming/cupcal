@@ -1,8 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import {
+  ArrowLeft,
+  Check,
+  Trophy,
+  Medal,
+  EyeSlash,
+  Lightning,
+  PencilSimple,
+} from "@phosphor-icons/react/ssr";
 import { getStore } from "@/lib/store";
 import { TEAMS_BY_CODE } from "@/lib/teams";
 import SubscribeButtons from "@/components/SubscribeButtons";
+import Flag from "@/components/Flag";
 
 export const metadata = {
   title: "Your World Cup 2026 calendar",
@@ -27,12 +37,17 @@ export default async function SavedCalendarPage({
 
   return (
     <main className="mx-auto max-w-xl px-4 py-12">
-      <Link href="/" className="text-sm text-zinc-500 hover:underline">← World Cup Calendar</Link>
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
+        <ArrowLeft size={14} /> World Cup Calendar
+      </Link>
 
       {updated && (
-        <p className="mt-4 rounded-xl bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
-          ✓ Saved. If you&apos;re already subscribed, your calendar will pick up the
-          changes on its next refresh — nothing else to do.
+        <p className="mt-4 flex items-start gap-2 rounded-xl bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-300">
+          <Check size={18} weight="bold" className="mt-0.5 shrink-0" />
+          <span>
+            Saved. If you&apos;re already subscribed, your calendar will pick up the
+            changes on its next refresh — nothing else to do.
+          </span>
         </p>
       )}
 
@@ -42,19 +57,27 @@ export default async function SavedCalendarPage({
 
       <div className="mt-4 flex flex-wrap gap-2">
         {saved.config.teams.includes("all") ? (
-          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">🏆 Every game</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+            <Trophy size={16} weight="fill" className="text-emerald-600" /> Every game
+          </span>
         ) : (
           teams.map((t) => (
-            <span key={t.code} className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
-              {t.flag} {t.name}
+            <span key={t.code} className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+              <Flag code={t.flag} name={t.name} /> {t.name}
             </span>
           ))
         )}
         {saved.config.finals && (
-          <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">🥇 Semis &amp; final</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+            <Medal size={16} weight="fill" className="text-emerald-600" /> Semis &amp; final
+          </span>
         )}
-        <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
-          {saved.config.spoilers === "safe" ? "🙈 Spoiler-safe" : "⚡ Instant updates"}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-sm">
+          {saved.config.spoilers === "safe" ? (
+            <><EyeSlash size={16} className="text-emerald-600" /> Spoiler-safe</>
+          ) : (
+            <><Lightning size={16} weight="fill" className="text-amber-500" /> Instant updates</>
+          )}
         </span>
       </div>
 
@@ -76,9 +99,9 @@ export default async function SavedCalendarPage({
         </p>
         <Link
           href={`/build?edit=${id}`}
-          className="mt-3 inline-block rounded-xl border border-emerald-600 px-4 py-2 font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950"
+          className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-600 px-4 py-2 font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950"
         >
-          ✏️ Edit teams
+          <PencilSimple size={18} /> Edit teams
         </Link>
         <p className="mt-3 text-xs text-zinc-500">
           Bookmark this page — the link is your key to this calendar. Anyone

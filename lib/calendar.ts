@@ -101,7 +101,7 @@ const maxEnd = (ms: Match[]) =>
 export interface PremadeCalendar {
   slug: string;
   title: string;
-  emoji: string;
+  icon: string; // Phosphor icon name, mapped in components/PremadeIcon.tsx
   description: string;
   config: CalendarConfig;
 }
@@ -113,21 +113,21 @@ export const PREMADE: PremadeCalendar[] = [
   {
     slug: "all-games",
     title: "Every game",
-    emoji: "🏆",
+    icon: "Trophy",
     description: "All 104 matches of the 2026 World Cup, kick-off to final.",
     config: { teams: ["all"], finals: true, spoilers: "safe", name: "World Cup 2026 · Every game" },
   },
   {
     slug: "knockouts",
     title: "Semis & final only",
-    emoji: "🥇",
+    icon: "Medal",
     description: "Just the big ones: both semi-finals, the third-place match and the final.",
     config: { teams: [], finals: true, spoilers: "safe", name: "World Cup 2026 · Semis & final" },
   },
   {
     slug: "favourites",
     title: "Tournament favourites",
-    emoji: "⭐",
+    icon: "Star",
     description: "Argentina, France, Brazil, England, Spain, Germany, Portugal and the Netherlands.",
     config: {
       teams: TEAMS.filter((t) => t.favourite).map((t) => t.code),
@@ -139,35 +139,35 @@ export const PREMADE: PremadeCalendar[] = [
   {
     slug: "european-teams",
     title: "European teams",
-    emoji: "🇪🇺",
+    icon: "Globe",
     description: "Every match involving one of the 16 European sides.",
     config: { teams: regionTeams("europe"), finals: true, spoilers: "safe", name: "World Cup 2026 · European teams" },
   },
   {
     slug: "african-teams",
     title: "African teams",
-    emoji: "🌍",
+    icon: "Globe",
     description: "Every match involving one of the African sides.",
     config: { teams: regionTeams("africa"), finals: true, spoilers: "safe", name: "World Cup 2026 · African teams" },
   },
   {
     slug: "south-american-teams",
     title: "South American teams",
-    emoji: "🌎",
+    icon: "Globe",
     description: "Every match involving one of the CONMEBOL sides.",
     config: { teams: regionTeams("south-america"), finals: true, spoilers: "safe", name: "World Cup 2026 · South American teams" },
   },
   {
     slug: "asian-teams",
     title: "Asian teams",
-    emoji: "🌏",
+    icon: "Globe",
     description: "Every match involving one of the Asian and Middle Eastern sides.",
     config: { teams: regionTeams("asia"), finals: true, spoilers: "safe", name: "World Cup 2026 · Asian teams" },
   },
   {
     slug: "host-nations",
     title: "Host nations",
-    emoji: "🏟️",
+    icon: "MapPin",
     description: "USA, Mexico and Canada — every match the hosts play.",
     config: { teams: ["usa", "mex", "can"], finals: true, spoilers: "safe", name: "World Cup 2026 · Host nations" },
   },
