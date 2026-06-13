@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
   Check,
   CheckCircle,
@@ -221,12 +221,30 @@ const STEPS = [
   },
 ];
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 639px)");
+    const update = () => setIsMobile(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isMobile;
+}
+
 function StepCard({ step, index }: { step: (typeof STEPS)[number]; index: number }) {
   const [hovered, setHovered] = useState(false);
   const Preview = step.Preview;
+  const isMobile = useIsMobile();
+  const ref = useRef<HTMLLIElement>(null);
+  const inView = useInView(ref, { amount: 0.5 });
 
   return (
     <li
+      ref={ref}
       className="grid grid-rows-[auto_1fr] sm:grid-rows-[subgrid] sm:row-span-2 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -239,7 +257,7 @@ function StepCard({ step, index }: { step: (typeof STEPS)[number]; index: number
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{step.body}</p>
       </div>
       <div className="flex min-h-[180px] items-center overflow-hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5">
-        <Preview hovered={hovered} />
+        <Preview hovered={isMobile ? inView : hovered} />
       </div>
     </li>
   );
