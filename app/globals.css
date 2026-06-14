@@ -22,6 +22,9 @@
    to a gold ramp anchored on #9D6F19 (= emerald-600) so every existing
    emerald utility — buttons, toggles, links, focus rings, icons — turns gold. */
 @theme {
+  --text-2xl: 2rem;
+  --text-lg: 1.5rem;
+
   --color-emerald-50: #faf5e8;
   --color-emerald-100: #f2e4be;
   --color-emerald-200: #e7ce8b;

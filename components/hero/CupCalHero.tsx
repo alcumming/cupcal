@@ -64,7 +64,7 @@ export default function CupCalHero() {
         </a>
       </div>
       <p className="mt-6 text-center font-sans text-[18px] font-medium leading-[20px] text-[#262626]">
-        Local kick-off times. No spoilers. Stays updated as the tournament unfolds.
+        Updates as the tournament unfolds.
       </p>
     </section>
   );
