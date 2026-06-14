@@ -20,7 +20,7 @@ export interface Team {
 export const TEAMS: Team[] = [
   { code: "alg", name: "Algeria", flag: "dz", region: "africa" },
   { code: "arg", name: "Argentina", flag: "ar", region: "south-america", favourite: true },
-  { code: "aus", name: "Australia", flag: "au", region: "asia" },
+  { code: "aus", name: "Australia", flag: "au", region: "oceania" },
   { code: "aut", name: "Austria", flag: "at", region: "europe" },
   { code: "bel", name: "Belgium", flag: "be", region: "europe" },
   { code: "bih", name: "Bosnia & Herzegovina", flag: "ba", region: "europe" },
