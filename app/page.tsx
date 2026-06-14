@@ -100,6 +100,12 @@ export default function Home() {
           </a>{" "}
           project. Not affiliated with FIFA.
         </p>
+        <p className="mt-2">
+          Made by{" "}
+          <a href="https://x.com/Al_Cumming" className="underline" rel="noopener">
+            @Al_Cumming
+          </a>
+        </p>
       </footer>
     </main>
   );
