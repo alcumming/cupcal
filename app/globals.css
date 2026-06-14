@@ -24,6 +24,7 @@
 @theme {
   --text-2xl: 2rem;
   --text-lg: 1.5rem;
+  --text-lg--line-height: calc(1.25 / 1.125);
 
   --color-emerald-50: #faf5e8;
   --color-emerald-100: #f2e4be;
