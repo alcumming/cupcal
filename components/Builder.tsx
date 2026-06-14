@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Checkbox } from "@base-ui/react/checkbox";
 import { Switch } from "@base-ui/react/switch";
 import { Toggle } from "@base-ui/react/toggle";
 import { Input } from "@base-ui/react/input";
-import { ArrowLeft, ArrowRight, FloppyDisk } from "@phosphor-icons/react/ssr";
+import { Dialog } from "@base-ui/react/dialog";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/ssr";
 import { TEAMS, REGION_LABELS, Region } from "@/lib/teams";
 import SubscribeButtons from "./SubscribeButtons";
 import Flag from "./Flag";
@@ -23,7 +23,6 @@ const REGION_ORDER: Region[] = [
 
 export default function Builder() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const editId = searchParams.get("edit");
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -32,8 +31,6 @@ export default function Builder() {
   const [name, setName] = useState("");
   const [search, setSearch] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState("");
   const [loaded, setLoaded] = useState(!editId);
 
   // Editing an existing saved calendar: load its config
@@ -47,7 +44,6 @@ export default function Builder() {
         setSpoilers(saved.config.spoilers);
         setName(saved.config.name ?? "");
       })
-      .catch(() => setSaveError("Couldn't load that calendar — the link may be wrong."))
       .finally(() => setLoaded(true));
   }, [editId]);
 
@@ -77,31 +73,6 @@ export default function Builder() {
 
   const canGenerate = selected.size > 0 || finals;
 
-  const save = async () => {
-    setSaving(true);
-    setSaveError("");
-    const body = { teams: [...selected], finals, spoilers, name: name || undefined };
-    try {
-      const res = editId
-        ? await fetch(`/api/calendars/${editId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          })
-        : await fetch("/api/calendars", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Something went wrong");
-      router.push(`/c/${editId ?? data.id}${editId ? "?updated=1" : ""}`);
-    } catch (e) {
-      setSaveError(e instanceof Error ? e.message : "Something went wrong");
-      setSaving(false);
-    }
-  };
-
   if (!loaded) {
     return <main className="mx-auto max-w-3xl px-4 py-16 text-zinc-500">Loading your calendar…</main>;
   }
@@ -118,45 +89,6 @@ export default function Builder() {
         Every game your teams play goes in your calendar — including knockout
         games as they qualify.
       </p>
-
-      <div className="mt-6 space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <Checkbox.Root
-            checked={finals}
-            onCheckedChange={(checked) => setFinals(checked === true)}
-            className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border border-zinc-400 dark:border-zinc-600 data-checked:border-emerald-600 data-checked:bg-emerald-600"
-          >
-            <Checkbox.Indicator className="text-white">
-              <svg viewBox="0 0 12 10" className="h-3 w-3 fill-none stroke-current stroke-2">
-                <path d="M1 5l3.5 3.5L11 1" />
-              </svg>
-            </Checkbox.Indicator>
-          </Checkbox.Root>
-          <span>
-            <span className="font-medium">Include semi-finals &amp; the final</span>
-            <span className="block text-sm text-zinc-500">
-              Included by default, even if you don&apos;t pick a single team.
-            </span>
-          </span>
-        </label>
-
-        <label className="flex items-start gap-3 cursor-pointer">
-          <Switch.Root
-            checked={spoilers === "safe"}
-            onCheckedChange={(checked) => setSpoilers(checked ? "safe" : "instant")}
-            className="mt-0.5 h-5 w-9 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 p-0.5 transition data-checked:bg-emerald-600"
-          >
-            <Switch.Thumb className="block h-4 w-4 rounded-full bg-white transition-transform data-checked:translate-x-4" />
-          </Switch.Root>
-          <span>
-            <span className="font-medium">Spoiler protection</span>
-            <span className="block text-sm text-zinc-500">
-              Knockout match-ups stay hidden until 18 hours after the deciding
-              game, so results aren&apos;t spoiled. Turn off to see them immediately.
-            </span>
-          </span>
-        </label>
-      </div>
 
       <Input
         type="search"
@@ -190,70 +122,88 @@ export default function Builder() {
         );
       })}
 
+      <div className="mt-6 space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+        <label className="flex items-start gap-3 cursor-pointer">
+          <Switch.Root
+            checked={finals}
+            onCheckedChange={(checked) => setFinals(checked)}
+            className="mt-0.5 h-5 w-9 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 p-0.5 transition data-checked:bg-emerald-600"
+          >
+            <Switch.Thumb className="block h-4 w-4 rounded-full bg-white transition-transform data-checked:translate-x-4" />
+          </Switch.Root>
+          <span>
+            <span className="font-medium">Include semi-finals &amp; the final</span>
+            <span className="block text-sm text-zinc-500">
+              Included by default, even if you don&apos;t pick a single team.
+            </span>
+          </span>
+        </label>
+
+        <label className="flex items-start gap-3 cursor-pointer">
+          <Switch.Root
+            checked={spoilers === "safe"}
+            onCheckedChange={(checked) => setSpoilers(checked ? "safe" : "instant")}
+            className="mt-0.5 h-5 w-9 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 p-0.5 transition data-checked:bg-emerald-600"
+          >
+            <Switch.Thumb className="block h-4 w-4 rounded-full bg-white transition-transform data-checked:translate-x-4" />
+          </Switch.Root>
+          <span>
+            <span className="font-medium">Spoiler protection</span>
+            <span className="block text-sm text-zinc-500">
+              Knockout match-ups stay hidden until 18 hours after the deciding
+              game, so results aren&apos;t spoiled. Turn off to see them immediately.
+            </span>
+          </span>
+        </label>
+      </div>
+
       {/* Sticky action bar */}
       <div className="fixed inset-x-0 bottom-0 border-t border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur">
         <div className="mx-auto max-w-3xl px-4 py-3">
-          {!showResult ? (
-            <div className="flex items-center justify-between gap-4">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                <span className="font-semibold">{selected.size}</span>{" "}
-                {selected.size === 1 ? "team" : "teams"}
-                {finals && " + semis & final"}
-              </p>
-              <button
-                onClick={() => setShowResult(true)}
-                disabled={!canGenerate}
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-40"
-              >
-                Get my calendar <ArrowRight size={18} weight="bold" />
-              </button>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              <span className="font-semibold">{selected.size}</span>{" "}
+              {selected.size === 1 ? "team" : "teams"}
+              {finals && " + semis & final"}
+            </p>
+            <button
+              onClick={() => setShowResult(true)}
+              disabled={!canGenerate}
+              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-40"
+            >
+              Get my calendar <ArrowRight size={18} weight="bold" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <Dialog.Root open={showResult} onOpenChange={setShowResult}>
+        <Dialog.Portal>
+          <Dialog.Backdrop className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity data-starting-style:opacity-0 data-ending-style:opacity-0" />
+          <Dialog.Popup className="fixed inset-x-0 bottom-0 flex max-h-[90vh] w-full flex-col rounded-t-3xl bg-white dark:bg-zinc-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl transition-all sm:inset-x-auto sm:left-1/2 sm:bottom-auto sm:top-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl data-starting-style:translate-y-full data-starting-style:opacity-0 data-ending-style:translate-y-full data-ending-style:opacity-0 sm:data-starting-style:translate-y-4 sm:data-ending-style:translate-y-4">
+            <div className="mx-auto mb-2 h-1.5 w-10 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 sm:hidden" />
+            <div className="flex items-center justify-between">
+              <Dialog.Title className="font-semibold">Your calendar is ready</Dialog.Title>
+              <Dialog.Close className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
+                <ArrowLeft size={14} /> keep editing
+              </Dialog.Close>
             </div>
-          ) : (
-            <div className="max-h-[60vh] overflow-y-auto py-1">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Your calendar is ready</h3>
-                <button onClick={() => setShowResult(false)} className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
-                  <ArrowLeft size={14} /> keep editing
-                </button>
-              </div>
+            <div className="mt-3 flex-1 overflow-y-auto">
               <Input
                 type="text"
                 placeholder="Name it (optional) — e.g. ‘Our World Cup’"
                 value={name}
                 onChange={(e) => setName(e.target.value.slice(0, 80))}
-                className="my-3 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm outline-none focus:border-emerald-500"
+                className="mb-3 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm outline-none focus:border-emerald-500"
               />
               <SubscribeButtons
                 feedPath={`/api/cal?${query}`}
                 calendarName={name || "My World Cup 2026"}
               />
-              <div className="mt-3 border-t border-zinc-200 dark:border-zinc-800 pt-3">
-                <button
-                  onClick={save}
-                  disabled={saving}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-600 px-4 py-3 font-semibold text-emerald-700 dark:text-emerald-400 transition hover:bg-emerald-50 dark:hover:bg-emerald-950 disabled:opacity-40"
-                >
-                  {saving ? (
-                    "Saving…"
-                  ) : (
-                    <>
-                      <FloppyDisk size={18} weight="fill" />
-                      {editId ? "Save changes" : "Save so I can edit it later (no signup)"}
-                    </>
-                  )}
-                </button>
-                {saveError && <p className="mt-2 text-sm text-red-600">{saveError}</p>}
-                {!editId && (
-                  <p className="mt-2 text-xs text-zinc-500">
-                    Saving gives you a private link to add or remove teams later —
-                    your subscribed calendar updates in place.
-                  </p>
-                )}
-              </div>
             </div>
-          )}
-        </div>
-      </div>
+          </Dialog.Popup>
+        </Dialog.Portal>
+      </Dialog.Root>
     </main>
   );
 }
