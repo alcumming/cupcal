@@ -63,6 +63,9 @@ export default function SubscribeButtons({
           <a href={webcalUrl} className={`${primary} bg-emerald-600 text-white hover:bg-emerald-700`}>
             <AppleLogo size={20} weight="fill" /> Add to Apple Calendar — one tap
           </a>
+          <a href={outlookUrl} target="_blank" rel="noopener" className={`${primary} bg-sky-600 text-white hover:bg-sky-700`}>
+            <MicrosoftOutlookLogo size={20} /> Add to Outlook.com
+          </a>
           <a href={mailto} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
             <Envelope size={20} /> Use Google Calendar? Email me the link
           </a>
@@ -77,6 +80,9 @@ export default function SubscribeButtons({
         <>
           <a href={googleUrl} className={`${primary} bg-emerald-600 text-white hover:bg-emerald-700`}>
             <GoogleLogo size={20} weight="bold" /> Add to Google Calendar
+          </a>
+          <a href={outlookUrl} target="_blank" rel="noopener" className={`${primary} bg-sky-600 text-white hover:bg-sky-700`}>
+            <MicrosoftOutlookLogo size={20} /> Add to Outlook.com
           </a>
           <a href={mailto} className={`${primary} bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700`}>
             <Envelope size={20} /> Email me the link
