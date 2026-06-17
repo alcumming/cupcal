@@ -91,7 +91,7 @@ export default async function SavedCalendarPage({
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+      <div className="mt-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
         <h2 className="font-semibold">Change your teams anytime</h2>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Discovered a new team to root for? Edit this calendar and your

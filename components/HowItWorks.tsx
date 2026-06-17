@@ -245,7 +245,7 @@ function StepCard({ step, index }: { step: (typeof STEPS)[number]; index: number
   return (
     <li
       ref={ref}
-      className="grid grid-rows-[auto_1fr] sm:grid-rows-[subgrid] sm:row-span-2 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800"
+      className="grid grid-rows-[auto_1fr] sm:grid-rows-[subgrid] sm:row-span-2 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

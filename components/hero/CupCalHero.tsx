@@ -58,7 +58,7 @@ export default function CupCalHero() {
         </Link>
         <a
           href="#calendars"
-          className="rounded-xl border border-zinc-300 dark:border-zinc-700 px-6 py-3.5 font-semibold transition hover:border-emerald-500"
+          className="rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3.5 font-semibold transition hover:border-emerald-500"
         >
           Ready-made calendars
         </a>

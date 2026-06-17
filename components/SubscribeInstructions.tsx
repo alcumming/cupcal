@@ -8,7 +8,7 @@ const TAB_CLASS =
 export default function SubscribeInstructions() {
   return (
     <Tabs.Root defaultValue="apple" className="mt-8">
-      <Tabs.List className="flex flex-wrap gap-2 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-2">
+      <Tabs.List className="flex flex-wrap gap-2 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2">
         <Tabs.Tab value="apple" className={TAB_CLASS}> iPhone &amp; Mac</Tabs.Tab>
         <Tabs.Tab value="google" className={TAB_CLASS}>Google Calendar</Tabs.Tab>
         <Tabs.Tab value="outlook" className={TAB_CLASS}>Outlook</Tabs.Tab>

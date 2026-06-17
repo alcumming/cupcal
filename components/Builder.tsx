@@ -95,7 +95,7 @@ export default function Builder() {
         placeholder="Search teams…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="mt-6 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent px-4 py-3 outline-none focus:border-emerald-500"
+        className="mt-6 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 outline-none focus:border-emerald-500"
       />
 
       {REGION_ORDER.map((region) => {
@@ -112,7 +112,7 @@ export default function Builder() {
                   key={t.code}
                   pressed={selected.has(t.code)}
                   onPressedChange={(pressed) => toggle(t.code, pressed)}
-                  className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium transition hover:border-emerald-500 data-pressed:border-emerald-600 data-pressed:bg-emerald-600 data-pressed:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm font-medium transition hover:border-emerald-500 data-pressed:border-emerald-600 data-pressed:bg-emerald-600 data-pressed:text-white"
                 >
                   <Flag code={t.flag} name={t.name} /> {t.name}
                 </Toggle>
@@ -122,7 +122,7 @@ export default function Builder() {
         );
       })}
 
-      <div className="mt-6 space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+      <div className="mt-6 space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
         <label className="flex items-start gap-3 cursor-pointer">
           <Switch.Root
             checked={finals}
@@ -182,23 +182,12 @@ export default function Builder() {
           <Dialog.Backdrop className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity data-starting-style:opacity-0 data-ending-style:opacity-0" />
           <Dialog.Popup className="fixed inset-x-0 bottom-0 flex max-h-[90vh] w-full flex-col rounded-t-3xl bg-white dark:bg-zinc-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl transition-all sm:inset-x-auto sm:left-1/2 sm:bottom-auto sm:top-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl data-starting-style:translate-y-full data-starting-style:opacity-0 data-ending-style:translate-y-full data-ending-style:opacity-0 sm:data-starting-style:translate-y-4 sm:data-ending-style:translate-y-4">
             <div className="mx-auto mb-2 h-1.5 w-10 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 sm:hidden" />
-            <div className="flex items-center justify-between">
-              <Dialog.Title className="font-semibold">Your calendar is ready</Dialog.Title>
-              <Dialog.Close className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:underline">
-                <ArrowLeft size={14} /> keep editing
-              </Dialog.Close>
-            </div>
-            <div className="mt-3 flex-1 overflow-y-auto">
-              <Input
-                type="text"
-                placeholder="Name it (optional) — e.g. ‘Our World Cup’"
-                value={name}
-                onChange={(e) => setName(e.target.value.slice(0, 80))}
-                className="mb-3 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent px-4 py-2 text-sm outline-none focus:border-emerald-500"
-              />
+            <Dialog.Title className="font-semibold mb-3">Your calendar is ready</Dialog.Title>
+            <div className="flex-1 overflow-y-auto">
               <SubscribeButtons
                 feedPath={`/api/cal?${query}`}
                 calendarName={name || "My World Cup 2026"}
+                hideCopy
               />
             </div>
           </Dialog.Popup>

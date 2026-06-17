@@ -8,7 +8,7 @@ export default function Faq({ faqs }: { faqs: { q: string; a: string }[] }) {
       {faqs.map((f) => (
         <Accordion.Item
           key={f.q}
-          className="rounded-2xl border border-zinc-200 dark:border-zinc-800"
+          className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
         >
           <Accordion.Header>
             <Accordion.Trigger className="group flex w-full items-center justify-between gap-4 p-5 text-left font-semibold">

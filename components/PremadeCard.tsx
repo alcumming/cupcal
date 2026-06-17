@@ -17,7 +17,7 @@ export default function PremadeCard({
   description: string;
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 flex flex-col">
+    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 flex flex-col">
       <PremadeIcon name={icon} size={30} className="text-emerald-600" />
       <h3 className="mt-2 text-lg font-semibold">{title}</h3>
       <p className="mt-1 flex-1 text-sm text-zinc-600 dark:text-zinc-400">{description}</p>
